@@ -12,6 +12,8 @@
 		0A38048B2080F2F8004AA86D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A3804892080F2F8004AA86D /* Main.storyboard */; };
 		0A38048D2080F2F9004AA86D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A38048C2080F2F9004AA86D /* Assets.xcassets */; };
 		0A3804902080F2F9004AA86D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A38048E2080F2F9004AA86D /* LaunchScreen.storyboard */; };
+		0A38049B2081069B004AA86D /* Box.scn in Resources */ = {isa = PBXBuildFile; fileRef = 0A38049A2081069B004AA86D /* Box.scn */; };
+		0A38049D20821543004AA86D /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A38049C20821543004AA86D /* Models.scnassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		0A38048C2080F2F9004AA86D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A38048F2080F2F9004AA86D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A3804912080F2F9004AA86D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A38049A2081069B004AA86D /* Box.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Box.scn; sourceTree = "<group>"; };
+		0A38049C20821543004AA86D /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +61,11 @@
 				0A3804852080F2F8004AA86D /* AppDelegate.swift */,
 				0A3804872080F2F8004AA86D /* ViewController.swift */,
 				0A3804892080F2F8004AA86D /* Main.storyboard */,
+				0A38049C20821543004AA86D /* Models.scnassets */,
 				0A38048C2080F2F9004AA86D /* Assets.xcassets */,
 				0A38048E2080F2F9004AA86D /* LaunchScreen.storyboard */,
 				0A3804912080F2F9004AA86D /* Info.plist */,
+				0A38049A2081069B004AA86D /* Box.scn */,
 			);
 			path = SouvenirARTests;
 			sourceTree = "<group>";
@@ -124,6 +130,8 @@
 			files = (
 				0A3804902080F2F9004AA86D /* LaunchScreen.storyboard in Resources */,
 				0A38048D2080F2F9004AA86D /* Assets.xcassets in Resources */,
+				0A38049B2081069B004AA86D /* Box.scn in Resources */,
+				0A38049D20821543004AA86D /* Models.scnassets in Resources */,
 				0A38048B2080F2F8004AA86D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
