@@ -111,24 +111,14 @@ class ViewController: UIViewController {
             // If the scene contains multiple objects, you would need to check here if the right node was hit
             if sceneHitTestResult.first?.node.name == "Box" {
                 showStatus("Tapped Box")
-                testAnimation()
-
+                
                 if photosAreVisible == false {
-                    
-                    
-                    
-                    //photosNode.transform = boxNode.transform
-                    //sceneView.scene.rootNode.addChildNode(photosNode)
+                    testAnimation()
                     photosAreVisible = true
                 }
-        
             }
-
             return
         }
-        
-        
-        
         // When tapped on a plane, reposition the content
         let arHitTestResult = sceneView.hitTest(location, types: .existingPlane)
         if !arHitTestResult.isEmpty {
@@ -203,13 +193,10 @@ class ViewController: UIViewController {
     }
     
     func setupPhotos() {
-        
         let photos = photosNode.childNodes
-        
         for photo in photos {
             photo.geometry?.firstMaterial?.diffuse.contents = localPhotos.first
         }
-        
     }
     
     @IBAction func didPan(_ sender: UIPanGestureRecognizer) {
@@ -244,19 +231,14 @@ class ViewController: UIViewController {
 extension ViewController: ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        
-        
-        
         if anchor is ARPlaneAnchor {
             boxNode.simdTransform = anchor.transform
             boxNode.isHidden = false
         }
-        
         DispatchQueue.main.async {
             self.hideStatus()
         }
     }
-    
 }
 
 extension ViewController: ARSessionObserver {
@@ -294,7 +276,6 @@ extension ViewController: ARSessionObserver {
             // We are only concerned with the tracking states above.
             message = "Camera changed tracking state"
         }
-        
         message != nil ? showStatus(message!) : hideStatus()
     }
 }
@@ -307,7 +288,6 @@ extension ViewController {
         guard statusView.alpha == 0 else {
             return
         }
-        
         statusView.layer.masksToBounds = true
         statusView.layer.cornerRadius = 7.5
         
@@ -315,11 +295,9 @@ extension ViewController {
             self.statusView.alpha = 1
             self.statusView.frame = self.statusView.frame.insetBy(dx: -5, dy: -5)
         })
-        
     }
     
     func hideStatus() {
-        
         UIView.animate(withDuration: 0.25, delay: 1, animations: {
             self.statusView.alpha = 0
             self.statusView.frame = self.statusView.frame.insetBy(dx: 5, dy: 5)
