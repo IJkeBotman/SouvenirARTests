@@ -14,6 +14,7 @@
 		0A3804902080F2F9004AA86D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A38048E2080F2F9004AA86D /* LaunchScreen.storyboard */; };
 		0A38049B2081069B004AA86D /* Box.scn in Resources */ = {isa = PBXBuildFile; fileRef = 0A38049A2081069B004AA86D /* Box.scn */; };
 		0A38049D20821543004AA86D /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A38049C20821543004AA86D /* Models.scnassets */; };
+		0ABC502C2093574200613D82 /* AnimationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABC502B2093574200613D82 /* AnimationTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		0A3804912080F2F9004AA86D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A38049A2081069B004AA86D /* Box.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Box.scn; sourceTree = "<group>"; };
 		0A38049C20821543004AA86D /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
+		0ABC502B2093574200613D82 /* AnimationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			children = (
 				0A3804852080F2F8004AA86D /* AppDelegate.swift */,
 				0A3804872080F2F8004AA86D /* ViewController.swift */,
+				0ABC502B2093574200613D82 /* AnimationTest.swift */,
 				0A3804892080F2F8004AA86D /* Main.storyboard */,
 				0A38049C20821543004AA86D /* Models.scnassets */,
 				0A38048C2080F2F9004AA86D /* Assets.xcassets */,
@@ -145,6 +148,7 @@
 			files = (
 				0A3804882080F2F8004AA86D /* ViewController.swift in Sources */,
 				0A3804862080F2F8004AA86D /* AppDelegate.swift in Sources */,
+				0ABC502C2093574200613D82 /* AnimationTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

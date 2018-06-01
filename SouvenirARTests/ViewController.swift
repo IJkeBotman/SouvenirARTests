@@ -19,11 +19,29 @@ class ViewController: UIViewController {
     var boxIsVisible = false
     var photosAreVisible = false
     let boxScene = SCNScene(named: "Models.scnassets/BoxScene.scn")
+    var photosNode = SCNNode()
     var boxNode = SCNNode()
+    var localPhotos = [UIImage]()
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        localPhotos.append(UIImage(named: "0")!)
+        localPhotos.append(UIImage(named: "0")!)
+        localPhotos.append(UIImage(named: "0")!)
+        localPhotos.append(UIImage(named: "0")!)
+        localPhotos.append(UIImage(named: "0")!)
+        localPhotos.append(UIImage(named: "0")!)
+        localPhotos.append(UIImage(named: "0")!)
+        localPhotos.append(UIImage(named: "0")!)
+        
+        
+       
+        
+        photosNode = (boxScene?.rootNode.childNode(withName: "Photos", recursively: false))!
+        setupPhotos()
+       
         
         sceneView.delegate = self
         
@@ -72,8 +90,11 @@ class ViewController: UIViewController {
         // Run the view's session
         sceneView.session.run(configuration, options: [.removeExistingAnchors, .resetTracking])
         sceneView.automaticallyUpdatesLighting = true
+        sceneView.autoenablesDefaultLighting = true
 
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -90,11 +111,14 @@ class ViewController: UIViewController {
             // If the scene contains multiple objects, you would need to check here if the right node was hit
             if sceneHitTestResult.first?.node.name == "Box" {
                 showStatus("Tapped Box")
-                
+                testAnimation()
+
                 if photosAreVisible == false {
-                    let photosNode = (boxScene?.rootNode.childNode(withName: "Photos", recursively: false))!
-                    photosNode.transform = boxNode.transform
-                    sceneView.scene.rootNode.addChildNode(photosNode)
+                    
+                    
+                    
+                    //photosNode.transform = boxNode.transform
+                    //sceneView.scene.rootNode.addChildNode(photosNode)
                     photosAreVisible = true
                 }
         
@@ -103,12 +127,89 @@ class ViewController: UIViewController {
             return
         }
         
+        
+        
         // When tapped on a plane, reposition the content
         let arHitTestResult = sceneView.hitTest(location, types: .existingPlane)
         if !arHitTestResult.isEmpty {
             let hit = arHitTestResult.first!
             boxNode.simdTransform = hit.worldTransform
         }
+    }
+    
+    func scaleImages(image: UIImage) -> CGFloat{
+        
+        let ratio = 2 / image.size.width
+        
+        return ratio
+    }
+    
+    func testAnimation() {
+//        let box = SCNBox(width: 0.10, height: 0.10, length: 0.10, chamferRadius: 0)
+//        let node = SCNNode(geometry: box)
+//        node.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+//        node.position = boxNode.position
+//        sceneView.scene.rootNode.addChildNode(node)
+//        boxNode.removeFromParentNode()
+        var angle: Float = -.pi / 2
+        let radius: Float = -4.0
+        let angleIncrement: Float = (.pi) * 2.0 / Float(localPhotos.count)
+        let duration: TimeInterval = 2
+
+        let rootNode = SCNNode()
+        rootNode.position = boxNode.position
+        
+        for photo in localPhotos {
+            let ratio = self.scaleImages(image: photo)
+            
+            let plane = SCNPlane(width: 0, height: 0)
+            plane.width = photo.size.width * ratio
+            plane.height = photo.size.height * ratio
+            
+            plane.firstMaterial?.diffuse.contents = photo
+            let planeNode = SCNNode(geometry: plane)
+            
+            let x = boxNode.position.x - cos(angle) * radius
+            let z = boxNode.position.z - sin(angle) * radius
+            let planeNodePosition = SCNVector3(x, 1, z)
+            planeNode.eulerAngles.y = -.pi / 2 - angle
+
+            angle += angleIncrement
+            
+            //animations
+            
+            planeNode.position = boxNode.position
+            print("box position",boxNode.position)
+            print("planenode",planeNode.position)
+            let planeMoveAnimation = SCNAction.move(to: planeNodePosition, duration: duration)
+            planeMoveAnimation.timingMode = .easeInEaseOut
+            planeNode.runAction(planeMoveAnimation)
+            
+            planeNode.scale = SCNVector3(x: 0, y: 0, z: 0)
+            let planeScaleAnimation = SCNAction.scale(to: 1, duration: duration)
+            planeNode.runAction(planeScaleAnimation)
+            
+//            let planeFlipAnimation = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: duration)
+//            planeNode.runAction(planeFlipAnimation)
+            
+            rootNode.addChildNode(planeNode)
+        }
+        
+        let rootNodeAnimation = SCNAction.rotateTo(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: duration + 2.5)
+        rootNodeAnimation.timingMode = .easeInEaseOut
+        rootNode.runAction(rootNodeAnimation)
+
+        sceneView.scene.rootNode.addChildNode(rootNode)
+    }
+    
+    func setupPhotos() {
+        
+        let photos = photosNode.childNodes
+        
+        for photo in photos {
+            photo.geometry?.firstMaterial?.diffuse.contents = localPhotos.first
+        }
+        
     }
     
     @IBAction func didPan(_ sender: UIPanGestureRecognizer) {
@@ -223,10 +324,10 @@ extension ViewController {
             self.statusView.alpha = 0
             self.statusView.frame = self.statusView.frame.insetBy(dx: 5, dy: 5)
         })
-//        UIView.animate(withDuration: 0.25, animations: {
-//            self.statusView.alpha = 0
-//            self.statusView.frame = self.statusView.frame.insetBy(dx: 5, dy: 5)
-//        })
     }
+}
+
+extension Int {
+    var degreesToRadians: Double { return Double(self) * .pi / 180}
 }
 
