@@ -19,8 +19,8 @@ class ViewController: UIViewController {
     var boxIsVisible = false
     var photosAreVisible = false
     let boxScene = SCNScene(named: "Models.scnassets/BoxScene.scn")
-    var photosNode = SCNNode()
     var boxNode = SCNNode()
+    var boxLidNode = SCNNode()
     var localPhotos = [UIImage]()
 
     
@@ -39,13 +39,12 @@ class ViewController: UIViewController {
         
        
         
-        photosNode = (boxScene?.rootNode.childNode(withName: "Photos", recursively: false))!
-        setupPhotos()
        
         
         sceneView.delegate = self
         
         boxNode = (boxScene?.rootNode.childNode(withName: "Box", recursively: false))!
+        boxLidNode = boxNode.childNode(withName: "BoxLid", recursively: false)!
         boxNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
         boxNode.name = "Box"
         
@@ -137,12 +136,7 @@ class ViewController: UIViewController {
     }
     
     func testAnimation() {
-//        let box = SCNBox(width: 0.10, height: 0.10, length: 0.10, chamferRadius: 0)
-//        let node = SCNNode(geometry: box)
-//        node.geometry?.firstMaterial?.diffuse.contents = UIColor.red
-//        node.position = boxNode.position
-//        sceneView.scene.rootNode.addChildNode(node)
-//        boxNode.removeFromParentNode()
+
         var angle: Float = -.pi / 2
         let radius: Float = -4.0
         let angleIncrement: Float = (.pi) * 2.0 / Float(localPhotos.count)
@@ -150,6 +144,17 @@ class ViewController: UIViewController {
 
         let rootNode = SCNNode()
         rootNode.position = boxNode.position
+        var rotateAndScaleAction = SCNAction()
+        let scaleAction = SCNAction.scale(to: 1, duration: duration)
+        scaleAction.timingMode = .easeInEaseOut
+        var boxLidAction = SCNAction()
+        let boxMoveFirst = SCNAction.move(by: SCNVector3(0, 0.2, 0), duration: duration)
+        let boxMoveSecond = SCNAction.move(by: SCNVector3(0.2, -0.2, 0), duration: duration)
+        let boxRotateFirst = SCNAction.rotateBy(x: 0, y: 0, z: CGFloat(-90.degreesToRadians), duration: duration)
+//        let boxRotateSecond = SCNAction.rotateTo(x: 0, y: 0, z: 0, duration: duration)
+        let boxMoveAction = SCNAction.sequence([boxMoveSecond, boxRotateFirst])
+        boxLidAction = SCNAction.sequence([boxMoveFirst, boxMoveAction])
+        
         
         for photo in localPhotos {
             let ratio = self.scaleImages(image: photo)
@@ -173,33 +178,32 @@ class ViewController: UIViewController {
             planeNode.position = boxNode.position
             print("box position",boxNode.position)
             print("planenode",planeNode.position)
-            let planeMoveAnimation = SCNAction.move(to: planeNodePosition, duration: duration)
-            planeMoveAnimation.timingMode = .easeInEaseOut
-            planeNode.runAction(planeMoveAnimation)
+            
+            
+            let moveAction = SCNAction.move(to: planeNodePosition, duration: duration)
+            moveAction.timingMode = .easeInEaseOut
             
             planeNode.scale = SCNVector3(x: 0, y: 0, z: 0)
-            let planeScaleAnimation = SCNAction.scale(to: 1, duration: duration)
-            planeNode.runAction(planeScaleAnimation)
+            
+            
+            rotateAndScaleAction = SCNAction.group([moveAction, scaleAction])
+            
             
 //            let planeFlipAnimation = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: duration)
 //            planeNode.runAction(planeFlipAnimation)
             
             rootNode.addChildNode(planeNode)
+            planeNode.runAction(rotateAndScaleAction)
         }
         
         let rootNodeAnimation = SCNAction.rotateTo(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: duration + 2.5)
         rootNodeAnimation.timingMode = .easeInEaseOut
         rootNode.runAction(rootNodeAnimation)
+        boxLidNode.runAction(boxLidAction)
 
         sceneView.scene.rootNode.addChildNode(rootNode)
     }
     
-    func setupPhotos() {
-        let photos = photosNode.childNodes
-        for photo in photos {
-            photo.geometry?.firstMaterial?.diffuse.contents = localPhotos.first
-        }
-    }
     
     @IBAction func didPan(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: sceneView)
@@ -234,6 +238,8 @@ extension ViewController: ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if anchor is ARPlaneAnchor {
+//            let moveAction = SCNAction.move(to: anchor.transform.translation, duration: 20)
+//            boxNode.runAction(moveAction)
             boxNode.simdTransform = anchor.transform
             boxNode.isHidden = false
         }
@@ -311,3 +317,9 @@ extension Int {
     var degreesToRadians: Double { return Double(self) * .pi / 180}
 }
 
+extension float4x4 {
+    var translation: SCNVector3 {
+        let translation = self.columns.3
+        return SCNVector3(translation.x, translation.y, translation.z)
+    }
+}
