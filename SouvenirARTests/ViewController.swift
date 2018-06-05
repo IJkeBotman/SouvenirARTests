@@ -91,6 +91,7 @@ class ViewController: UIViewController {
         sceneView.session.run(configuration, options: [.removeExistingAnchors, .resetTracking])
         sceneView.automaticallyUpdatesLighting = true
         sceneView.autoenablesDefaultLighting = true
+        sceneView.scene.isPaused = true
 
     }
     
@@ -114,6 +115,7 @@ class ViewController: UIViewController {
                 
                 if photosAreVisible == false {
                     testAnimation()
+                    sceneView.scene.isPaused = false
                     photosAreVisible = true
                 }
             }
